@@ -7,14 +7,13 @@ const (
   ParseProfile  = "ParseProfile"
   NilParser     = "NilParser"
 
-  // Service ports
-  ItemSaverPort = 1234
-  WorkerPort0   = 9000
-
   // Elasticsearch Index
   ElasticIndex = "dating_profile"
 
   // Service Endpoints
   ItemSaverRpc    = "ItemSaverService.Save"
   CrawlServiceRpc = "CrawlService.Process"
+
+  // Rate Limit
+  QPS = 20
 )

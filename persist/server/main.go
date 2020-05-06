@@ -1,6 +1,7 @@
 package main
 
 import (
+  "flag"
   "fmt"
   "log"
 
@@ -10,9 +11,15 @@ import (
   "github.com/olivere/elastic/v7"
 )
 
+var port = flag.Int("port", 0, "the port to listening on")
+
 func main() {
+  flag.Parse()
+  if *port == 0 {
+    fmt.Println("must specify a port")
+  }
   log.Fatal(serveRpc(
-    fmt.Sprintf(":%d", config.ItemSaverPort),
+    fmt.Sprintf(":%d", *port),
     config.ElasticIndex))
 }
 
