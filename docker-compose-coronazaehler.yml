@@ -19,29 +19,32 @@ services:
         - path=./persist/server/main.go
     ports:
       - "1234:1234"
-    command: bash wait-for-it.sh elasticsearch:9200 -- app --port=1234 --elastic_url=http://elasticsearch:9200 --elastic_index=dating_profile
+    command: bash wait-for-it.sh elasticsearch:9200 -- app --port=1234 --elastic_url=http://elasticsearch:9200 --elastic_index=county
     depends_on:
       - elasticsearch
     restart: on-failure
 
-  mockworker0:
+  worker0:
     build:
       context: .
-      dockerfile: docker/Dockerfile.mockweb.worker
+      dockerfile: docker/Dockerfile
+      args:
+        - path=./worker/server/main.go
     ports:
       - "9000:9000"
+    command: app --port=9000
 
   crawler:
     build:
       context: .
       dockerfile: docker/Dockerfile
       args:
-        - path=./webs/mockweb/main.go
-    command: bash wait-for-it.sh persist-server:1234 -- app --itemsaver_host=persist-server:1234 --worker_hosts=mockworker0:9000
+        - path=./webs/coronazaehler/main.go
+    command: bash wait-for-it.sh persist-server:1234 -- app --itemsaver_host=persist-server:1234 --worker_hosts=worker0:9000
     depends_on:
       - elasticsearch
       - persist-server
-      - mockworker0
+      - worker0
     restart: on-failure
 
   frontend:
@@ -49,10 +52,10 @@ services:
       context: .
       dockerfile: docker/Dockerfile.frontend
       args:
-        - path=./webs/mockweb/
+        - path=./webs/coronazaehler/
     ports:
       - "8888:8888"
-    command: bash wait-for-it.sh elasticsearch:9200 -- app --port=8888 --url=http://elasticsearch:9200 --index=dating_profile
+    command: bash wait-for-it.sh elasticsearch:9200 -- app --port=8888 --url=http://elasticsearch:9200 --index=county
     depends_on:
       - elasticsearch
     restart: on-failure

@@ -36,3 +36,25 @@ func NewClient(host string) (*rpc.Client, error) {
   }
   return jsonrpc.NewClient(conn), nil
 }
+
+func CreateClientPool(hosts []string) chan *rpc.Client {
+  var clients []*rpc.Client
+  for _, h := range hosts {
+    client, err := NewClient(h)
+    if err == nil {
+      clients = append(clients, client)
+    } else {
+      log.Printf("error connecting to %s: %v", h, err)
+    }
+  }
+
+  out := make(chan *rpc.Client)
+  go func() {
+    for {
+      for _, client := range clients {
+        out <- client
+      }
+    }
+  }()
+  return out
+}

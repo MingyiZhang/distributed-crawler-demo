@@ -9,25 +9,27 @@ import (
   "strings"
 
   "distributed-crawler-demo/engine"
-  "distributed-crawler-demo/webs/mockweb/frontend/model"
-  "distributed-crawler-demo/webs/mockweb/frontend/view"
+  "distributed-crawler-demo/frontend/model"
+  "distributed-crawler-demo/frontend/view"
   "github.com/olivere/elastic/v7"
 )
 
 type SearchResultHandler struct {
   view   view.SearchResultView
   client *elastic.Client
+  indices []string
 }
 
-func CreateSearchResultHandler(url string, template string) SearchResultHandler {
+func CreateSearchResultHandler(url, template string, indices []string) SearchResultHandler {
   client, err := elastic.NewClient(
     elastic.SetURL(url), elastic.SetSniff(false))
   if err != nil {
     panic(err)
   }
   return SearchResultHandler{
-    view: view.CreateSearchResultView(template),
-    client: client,
+    view:    view.CreateSearchResultView(template),
+    client:  client,
+    indices: indices,
   }
 }
 
@@ -40,7 +42,7 @@ func (h SearchResultHandler) ServeHTTP(w http.ResponseWriter, req *http.Request)
     from = 0
   }
 
-  page, err := h.getSearchResult(q, from)
+  page, err := h.getSearchResult(q, h.indices, from)
   if err != nil {
     http.Error(w, err.Error(), http.StatusBadRequest)
   }
@@ -50,10 +52,10 @@ func (h SearchResultHandler) ServeHTTP(w http.ResponseWriter, req *http.Request)
   }
 }
 
-func (h SearchResultHandler) getSearchResult(q string, from int) (model.SearchResult, error) {
+func (h SearchResultHandler) getSearchResult(q string, indices []string, from int) (model.SearchResult, error) {
   var result model.SearchResult
   res, err := h.client.
-    Search("dating_profile").
+    Search(indices...).
     Query(elastic.NewQueryStringQuery(rewriteQueryString(q))).
     From(from).
     Do(context.Background())

@@ -7,6 +7,8 @@ const (
   ParseProfile  = "ParseProfile"
   NilParser     = "NilParser"
 
+  ParseCounty = "ParseCounty"
+
   // Service Endpoints
   ItemSaverRpc    = "ItemSaverService.Save"
   CrawlServiceRpc = "CrawlService.Process"

@@ -1,13 +1,8 @@
-ARG path
-
-# compile stage
 FROM golang:alpine AS builder
 # build app
 WORKDIR /app
 COPY . .
-ARG path
-RUN echo $path/starter.go
-RUN go get ./... && go build -o app $path/starter.go
+RUN go get ./... && go build -o app ./frontend/starter.go
 # get wait-for-it
 WORKDIR /
 RUN apk add --no-cache git && \

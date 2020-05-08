@@ -9,11 +9,9 @@ import (
   saver "distributed-crawler-demo/persist/client"
   "distributed-crawler-demo/rpchelper"
   "distributed-crawler-demo/scheduler"
-  "distributed-crawler-demo/webs/mockweb/parser"
+  "distributed-crawler-demo/webs/coronazaehler/parser"
   worker "distributed-crawler-demo/worker/client"
 )
-
-const cityListUrl = "http://localhost:8080/mock/www.zhenai.com/zhenghun"
 
 var (
   itemSaverHost = flag.String("itemsaver_host", "", "itemsaver host")
@@ -32,13 +30,13 @@ func main() {
 
   e := engine.ConcurrentEngine{
     Scheduler:        &scheduler.QueuedScheduler{},
-    WorkerCount:      100,
+    WorkerCount:      1,
     ItemChan:         itemChan,
     RequestProcessor: processor,
   }
 
   e.Run(engine.Request{
-    Url:    cityListUrl,
-    Parser: engine.NewFuncParser(parser.ParseCityList, config.ParseCityList),
+    Url:    "https://www.coronazaehler.de",
+    Parser: engine.NewFuncParser(parser.ParseCounty, config.ParseCounty),
   })
 }

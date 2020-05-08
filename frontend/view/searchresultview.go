@@ -4,7 +4,7 @@ import (
   "html/template"
   "io"
 
-  "distributed-crawler-demo/webs/mockweb/frontend/model"
+  "distributed-crawler-demo/frontend/model"
 )
 
 type SearchResultView struct {
@@ -12,7 +12,7 @@ type SearchResultView struct {
 }
 
 func CreateSearchResultView(filename string) SearchResultView {
-  return SearchResultView {
+  return SearchResultView{
     template: template.Must(template.ParseFiles(filename)),
   }
 }

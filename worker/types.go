@@ -7,6 +7,7 @@ import (
 
   "distributed-crawler-demo/config"
   "distributed-crawler-demo/engine"
+  parser2 "distributed-crawler-demo/webs/coronazaehler/parser"
   "distributed-crawler-demo/webs/mockweb/parser"
 )
 
@@ -86,6 +87,8 @@ func deserializeParser(p SerializedParser) (engine.Parser, error) {
     } else {
       return nil, fmt.Errorf("invalid arg: %v", p.Args)
     }
+  case config.ParseCounty:
+    return engine.NewFuncParser(parser2.ParseCounty, config.ParseCounty), nil
   default:
     return nil, errors.New("unknown parser name")
 
