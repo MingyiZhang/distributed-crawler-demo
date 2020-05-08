@@ -1,0 +1,12 @@
+FROM golang:alpine AS builder
+
+WORKDIR /app
+COPY . .
+RUN go get ./...
+RUN go build -o app ./worker/server/main.go
+
+FROM golang:alpine
+WORKDIR /
+COPY --from=builder /app/app /app/webs/mockweb/mockserver/mockserver /app/webs/mockweb/mockserver/run_mock.sh /bin/
+COPY --from=builder /app/webs/mockweb/mockserver/ /mockserver
+CMD ["run_mock.sh"]

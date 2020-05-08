@@ -12,7 +12,7 @@ import (
 
 func TestItemSaver(t *testing.T) {
   const host = ":1234"
-  go serveRpc(host, "test1")
+  go serveRpc(host, "localhost:9200", "test1")
   time.Sleep(time.Second)
 
   client, err := rpchelper.NewClient(host)

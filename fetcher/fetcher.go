@@ -22,7 +22,7 @@ func Fetch(url string) ([]byte, error) {
   log.Printf("Fetching url %s", url)
   res, err := http.Get(url)
   if err != nil {
-    panic(err)
+    return nil, err
   }
   defer  res.Body.Close()
 

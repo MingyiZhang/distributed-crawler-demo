@@ -1,0 +1,58 @@
+version: "3.7"
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    environment:
+      - discovery.type=single-node
+      - cluster.name=escontainers
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    ports:
+      - "9200:9200"
+
+  persist-server:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        - path=./persist/server/main.go
+    ports:
+      - "1234:1234"
+    command: bash wait-for-it.sh elasticsearch:9200 -- app --port=1234 --elastic_url=http://elasticsearch:9200 --elastic_index=dating_profile
+    depends_on:
+      - elasticsearch
+    restart: on-failure
+
+  mockworker0:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.mockweb.worker
+    ports:
+      - "9000:9000"
+
+  crawler:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        - path=./webs/mockweb/main.go
+    command: bash wait-for-it.sh persist-server:1234 -- app --itemsaver_host=persist-server:1234 --worker_hosts=mockworker0:9000
+    depends_on:
+      - elasticsearch
+      - persist-server
+      - mockworker0
+    restart: on-failure
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+      args:
+        - path=./webs/mockweb/frontend
+    ports:
+      - "8888:8888"
+    command: bash wait-for-it.sh elasticsearch:9200 -- app --port=8888 --url=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    restart: on-failure

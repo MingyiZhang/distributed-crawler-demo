@@ -7,9 +7,6 @@ const (
   ParseProfile  = "ParseProfile"
   NilParser     = "NilParser"
 
-  // Elasticsearch Index
-  ElasticIndex = "dating_profile"
-
   // Service Endpoints
   ItemSaverRpc    = "ItemSaverService.Save"
   CrawlServiceRpc = "CrawlService.Process"

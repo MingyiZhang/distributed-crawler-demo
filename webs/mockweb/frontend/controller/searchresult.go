@@ -19,8 +19,9 @@ type SearchResultHandler struct {
   client *elastic.Client
 }
 
-func CreateSearchResultHandler(template string) SearchResultHandler {
-  client, err := elastic.NewClient(elastic.SetSniff(false))
+func CreateSearchResultHandler(url string, template string) SearchResultHandler {
+  client, err := elastic.NewClient(
+    elastic.SetURL(url), elastic.SetSniff(false))
   if err != nil {
     panic(err)
   }

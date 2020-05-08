@@ -1,0 +1,23 @@
+ARG path
+
+# compile stage
+FROM golang:alpine AS builder
+# build app
+WORKDIR /app
+COPY . .
+ARG path
+RUN echo $path/starter.go
+RUN go get ./... && go build -o app $path/starter.go
+# get wait-for-it
+WORKDIR /
+RUN apk add --no-cache git && \
+    git clone https://github.com/vishnubob/wait-for-it.git
+
+# running container
+FROM golang:alpine
+ARG path
+RUN apk add --no-cache bash
+WORKDIR /
+COPY --from=builder /app/app /wait-for-it/wait-for-it.sh /bin/
+COPY --from=builder /app/$path/view /view
+CMD ["app"]
