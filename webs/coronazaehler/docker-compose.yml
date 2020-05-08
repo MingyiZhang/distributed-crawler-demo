@@ -13,8 +13,8 @@ services:
 
   persist-server:
     build:
-      context: .
-      dockerfile: docker/Dockerfile
+      context: ../..
+      dockerfile: ./docker/Dockerfile
       args:
         - path=./persist/server/main.go
     ports:
@@ -26,8 +26,8 @@ services:
 
   worker0:
     build:
-      context: .
-      dockerfile: docker/Dockerfile
+      context: ../..
+      dockerfile: ./docker/Dockerfile
       args:
         - path=./worker/server/main.go
     ports:
@@ -36,8 +36,8 @@ services:
 
   crawler:
     build:
-      context: .
-      dockerfile: docker/Dockerfile
+      context: ../..
+      dockerfile: ./docker/Dockerfile
       args:
         - path=./webs/coronazaehler/main.go
     command: bash wait-for-it.sh persist-server:1234 -- app --itemsaver_host=persist-server:1234 --worker_hosts=worker0:9000
@@ -49,8 +49,8 @@ services:
 
   frontend:
     build:
-      context: .
-      dockerfile: docker/Dockerfile.frontend
+      context: ../..
+      dockerfile: ./docker/Dockerfile.frontend
       args:
         - path=./webs/coronazaehler/
     ports:
