@@ -7,19 +7,27 @@ type Parser interface {
   Serialize() (name string, args interface{})
 }
 
+// Request is the instant that needs to be parsed.
 type Request struct {
+  // Url is the url to parse.
   Url    string
+  // Parser is used for parse the Request's Url.
   Parser Parser
 }
 
+// ParseResult is the instant that contains the result after scraping.
+// It contains new Requests from previous Request and
+// the Items that are to save.
 type ParseResult struct {
   Requests []Request
   Items    []Item
 }
 
+// Item is the instant that need to be saved to database.
 type Item struct {
   Url     string
   Id      string
+  // Payload is the model of the data
   Payload interface{}
 }
 

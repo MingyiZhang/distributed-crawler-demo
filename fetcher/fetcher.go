@@ -17,6 +17,7 @@ import (
 
 var rateLimiter = time.Tick(time.Second / config.QPS)
 
+// Fetch obtains the content of the given url
 func Fetch(url string) ([]byte, error) {
   <- rateLimiter
   log.Printf("Fetching url %s", url)

@@ -6,6 +6,7 @@ import (
   "distributed-crawler-demo/fetcher"
 )
 
+// Worker parses request and return result
 func Worker(r Request) (ParseResult, error) {
   body, err := fetcher.Fetch(r.Url)
   if err != nil {

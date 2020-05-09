@@ -8,6 +8,8 @@ import (
   "distributed-crawler-demo/rpchelper"
 )
 
+// ItemSaver creates channel for Item and starts a RPC client goroutine
+// to receive parsed items.
 func ItemSaver(host string) (chan engine.Item, error) {
   client, err := rpchelper.NewClient(host)
   if err != nil {

@@ -11,6 +11,7 @@ import (
   "distributed-crawler-demo/webs/mockweb/parser"
 )
 
+
 type SerializedParser struct {
   Name string
   Args interface{}

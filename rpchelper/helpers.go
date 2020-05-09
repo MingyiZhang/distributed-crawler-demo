@@ -7,6 +7,7 @@ import (
   "net/rpc/jsonrpc"
 )
 
+// ServeRpc starts an RPC server with given host address and service
 func ServeRpc(host string, service interface{}) error {
   err := rpc.Register(service)
   if err != nil {
@@ -29,6 +30,7 @@ func ServeRpc(host string, service interface{}) error {
   }
 }
 
+// NewClient creates an RPC client with given host address
 func NewClient(host string) (*rpc.Client, error) {
   conn, err := net.Dial("tcp", host)
   if err != nil {
@@ -37,6 +39,8 @@ func NewClient(host string) (*rpc.Client, error) {
   return jsonrpc.NewClient(conn), nil
 }
 
+// CreateClientPool creates and sends RPC clients to client channel
+// It performs load balancing among hosts
 func CreateClientPool(hosts []string) chan *rpc.Client {
   var clients []*rpc.Client
   for _, h := range hosts {

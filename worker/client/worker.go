@@ -8,6 +8,7 @@ import (
   "distributed-crawler-demo/worker"
 )
 
+// CreateProcessor creates Processor function for worker.
 func CreateProcessor(clientChan chan *rpc.Client) engine.Processor {
   return func(req engine.Request) (engine.ParseResult, error) {
     sReq := worker.SerializeRequest(req)

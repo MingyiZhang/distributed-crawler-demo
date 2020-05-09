@@ -10,6 +10,7 @@ import (
   "distributed-crawler-demo/rpchelper"
 )
 
+// TODO: test without starting elasticsearch
 func TestItemSaver(t *testing.T) {
   const host = ":1234"
   go serveRpc(host, "localhost:9200", "test1")
