@@ -12,11 +12,10 @@ func TestParseCityList(t *testing.T) {
   }
   result := ParseCityList(contents, "")
 
-  const resultSize = 470
+  const resultSize = 2
   expectedUrls := []string{
    "http://localhost:8080/mock/www.zhenai.com/zhenghun/aba",
    "http://localhost:8080/mock/www.zhenai.com/zhenghun/akesu",
-   "http://localhost:8080/mock/www.zhenai.com/zhenghun/alashanmeng",
   }
 
   if len(result.Requests) != resultSize {
