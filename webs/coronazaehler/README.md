@@ -1,3 +1,8 @@
+# coronazaehler.de crawler
+
+It scrapes the current COVID-19 data of Germany in [coronazaehler.de](coronazaehler.de) and
+saves to a elasticsearch node county by county.
+
 ## How to run
 
 Run everything: 

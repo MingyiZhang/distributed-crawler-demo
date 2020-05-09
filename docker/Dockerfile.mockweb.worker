@@ -5,8 +5,7 @@ COPY . .
 RUN go get ./...
 RUN go build -o app ./worker/server/main.go
 
-FROM golang:alpine
+FROM mingyizhang/mock-server:1.0
 WORKDIR /
-COPY --from=builder /app/app /app/webs/mockweb/mockserver/mockserver /app/webs/mockweb/mockserver/run_mock.sh /bin/
-COPY --from=builder /app/webs/mockweb/mockserver/ /mockserver
+COPY --from=builder /app/app /app/webs/mockweb/run_mock.sh /bin/
 CMD ["run_mock.sh"]

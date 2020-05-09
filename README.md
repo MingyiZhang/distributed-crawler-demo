@@ -2,7 +2,7 @@
 
 A simple distributed web crawler library that is written in Go. 
 
-The library is implemented completed from scratch, as a practice of Go. 
+The library is implemented completed from scratch, as a Golang practice. 
 It is the capstone project of the imooc's Golang [course](https://coding.imooc.com/class/180.html).
 
 ## Architecture
@@ -15,7 +15,7 @@ As a distributed web crawler, it contains several components
 Components are communicated using JSON-RPC.
 
 ## Algorithm
-The crawler use breadth first search to scrape website.
+The crawler uses breadth first search to scrape website.
 
 ## Examples
 There are two simple examples included:
