@@ -2,7 +2,10 @@
 
 A simple distributed web crawler library that is written in Go. 
 
-The library is implemented completed from scratch, as a Golang practice. 
+The library is implemented completed from scratch. 
+As a Golang practice project, it is mainly focused on the distributed structure. 
+One needs to implement their own web parsers as shown in the [examples](#examples).
+
 It is the capstone project of the imooc's Golang [course](https://coding.imooc.com/class/180.html).
 
 ## Architecture
@@ -22,6 +25,8 @@ There are two simple examples included:
 - [Coronazaehler](./webs/coronazaehler) scrapes current COVID-19 data of every county in Germany from [coronazaehler.de](https://www.coronazaehler.de/).
 - [mockweb](./webs/mockweb) scrapes profile data from a mock dating website.
 
+## Note
+As shown in the 
 ## TODO
 - [x] separate service for saving data
 - [x] separate service for parsing web data
