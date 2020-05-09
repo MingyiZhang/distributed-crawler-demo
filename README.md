@@ -1,4 +1,4 @@
-# Distributed Web Crawler Demo
+# Simple Distributed Web Crawler Library
 
 A simple distributed web crawler library that is written in Go. 
 
