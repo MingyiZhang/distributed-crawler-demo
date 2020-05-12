@@ -33,5 +33,5 @@ As shown in the
 - [x] frontend for display search results
 - [ ] separate service for checking duplication
 - [ ] Kubernetes deployment
-
+- [ ] gRPC and Protobuf version
  
