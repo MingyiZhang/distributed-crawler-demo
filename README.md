@@ -25,12 +25,11 @@ There are two simple examples included:
 - [Coronazaehler](./webs/coronazaehler) scrapes current COVID-19 data of every county in Germany from [coronazaehler.de](https://www.coronazaehler.de/).
 - [mockweb](./webs/mockweb) scrapes profile data from a mock dating website.
 
-## Note
-As shown in the 
 ## TODO
 - [x] separate service for saving data
 - [x] separate service for parsing web data
 - [x] frontend for display search results
+- [x] use testcontainers in tests
 - [ ] separate service for checking duplication
 - [ ] Kubernetes deployment
 - [ ] gRPC and Protobuf version

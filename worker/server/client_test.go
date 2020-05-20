@@ -1,38 +1,49 @@
 package main
 
 import (
-  "fmt"
-  "testing"
-  "time"
+	"fmt"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+	"time"
 
-  "distributed-crawler-demo/config"
-  "distributed-crawler-demo/rpchelper"
-  "distributed-crawler-demo/worker"
+	"distributed-crawler-demo/config"
+	"distributed-crawler-demo/rpchelper"
+	"distributed-crawler-demo/worker"
 )
 
 func TestCrawlService(t *testing.T) {
-  const host = ":9000"
-  go rpchelper.ServeRpc(host, worker.CrawlService{})
-  time.Sleep(time.Second)
+	ts := httptest.NewServer(
+		http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+			fmt.Fprintln(w, "Hi there!")
+		}))
+	defer ts.Close()
 
-  client, err := rpchelper.NewClient(host)
-  if err != nil {
-    panic(err)
-  }
+	const host = ":9000"
+	go rpchelper.ServeRpc(host, worker.CrawlService{})
+	time.Sleep(time.Second)
 
-  req := worker.Request{
-    Url: "http://localhost:8080/mock/album.zhenai.com/u/6721425675858866615",
-    Parser: worker.SerializedParser{
-      Name: config.ParseProfile,
-      Args: "寂寞成影莓哒",
-    },
-  }
-  var result worker.ParseResult
-  err = client.Call(config.CrawlServiceRpc, req, &result)
-  if err != nil {
-    t.Error(err)
-  } else {
-    fmt.Println(result)
-  }
+	client, err := rpchelper.NewClient(host)
+	if err != nil {
+		panic(err)
+	}
+
+	req := worker.Request{
+		//Url: "http://localhost:8080/mock/album.zhenai.com/u/6721425675858866615",
+		Url: ts.URL,
+		Parser: worker.SerializedParser{
+			//Name: config.ParseProfile,
+			Name: config.NilParser,
+			//Args: "寂寞成影莓哒",
+			Args: "",
+		},
+	}
+	var result worker.ParseResult
+	err = client.Call(config.CrawlServiceRpc, req, &result)
+	if err != nil {
+		t.Error(err)
+	} else {
+		fmt.Println(result)
+	}
 
 }
