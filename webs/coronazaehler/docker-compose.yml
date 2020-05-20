@@ -11,6 +11,11 @@ services:
     ports:
       - "9200:9200"
 
+  redis:
+    image: redis:6.0.3-alpine
+    ports:
+      - "6379:6379"
+
   persist-server:
     build:
       context: ../..
@@ -22,6 +27,19 @@ services:
     command: bash wait-for-it.sh elasticsearch:9200 -- app --port=1234 --elastic_url=http://elasticsearch:9200 --elastic_index=county
     depends_on:
       - elasticsearch
+    restart: on-failure
+
+  duplicate-checker-server:
+    build:
+      context: ../..
+      dockerfile: ./docker/Dockerfile
+      args:
+        - path=./duplicate/server/main.go
+    ports:
+      - "4321:4321"
+    command: bash wait-for-it.sh redis:6379 -- app --port=4321 --redis_url=redis:6379
+    depends_on:
+      - redis
     restart: on-failure
 
   worker0:
@@ -40,10 +58,12 @@ services:
       dockerfile: ./docker/Dockerfile
       args:
         - path=./webs/coronazaehler/main.go
-    command: bash wait-for-it.sh persist-server:1234 -- app --itemsaver_host=persist-server:1234 --worker_hosts=worker0:9000
+    command: bash wait-for-it.sh persist-server:1234 -- app --itemsaver_host=persist-server:1234 --worker_hosts=worker0:9000 --checker_host=duplicate-checker-server:4321
     depends_on:
       - elasticsearch
       - persist-server
+      - redis
+      - duplicate-checker-server
       - worker0
     restart: on-failure
 

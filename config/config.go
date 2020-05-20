@@ -1,18 +1,19 @@
 package config
 
 const (
-  // Parser names
-  ParseCity     = "ParseCity"
-  ParseCityList = "ParseCityList"
-  ParseProfile  = "ParseProfile"
-  NilParser     = "NilParser"
+	// Parser names
+	ParseCity     = "ParseCity"
+	ParseCityList = "ParseCityList"
+	ParseProfile  = "ParseProfile"
+	NilParser     = "NilParser"
 
-  ParseCounty = "ParseCounty"
+	ParseCounty = "ParseCounty"
 
-  // Service Endpoints
-  ItemSaverRpc    = "ItemSaverService.Save"
-  CrawlServiceRpc = "CrawlService.Process"
+	// Service Endpoints
+	ItemSaverRpc        = "ItemSaverService.Save"
+	CrawlServiceRpc     = "CrawlService.Process"
+	DuplicateServiceRpc = "Service.Exists"
 
-  // Rate Limit
-  QPS = 20
+	// Rate Limit
+	QPS = 20
 )

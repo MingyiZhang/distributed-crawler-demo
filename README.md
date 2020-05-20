@@ -30,7 +30,7 @@ There are two simple examples included:
 - [x] separate service for parsing web data
 - [x] frontend for display search results
 - [x] use testcontainers in tests
-- [ ] separate service for checking duplication
+- [x] separate service for checking duplication
 - [ ] Kubernetes deployment
 - [ ] gRPC and Protobuf version
  

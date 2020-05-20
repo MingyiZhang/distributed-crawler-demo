@@ -24,6 +24,24 @@ services:
       - elasticsearch
     restart: on-failure
 
+  redis:
+    image: redis:6.0.3-alpine
+    ports:
+      - "6379:6379"
+
+  duplicate-checker-server:
+    build:
+      context: ../..
+      dockerfile: ./docker/Dockerfile
+      args:
+        - path=./duplicate/server/main.go
+    ports:
+      - "4321:4321"
+    command: bash wait-for-it.sh redis:6379 -- app --port=4321 --redis_url=redis:6379
+    depends_on:
+      - redis
+    restart: on-failure
+
   mockworker0:
     build:
       context: ../..
@@ -37,10 +55,12 @@ services:
       dockerfile: ./docker/Dockerfile
       args:
         - path=./webs/mockweb/main.go
-    command: bash wait-for-it.sh persist-server:1234 -- app --itemsaver_host=persist-server:1234 --worker_hosts=mockworker0:9000
+    command: bash wait-for-it.sh persist-server:1234 -- app --itemsaver_host=persist-server:1234 --worker_hosts=mockworker0:9000 --checker_host=duplicate-checker-server:4321
     depends_on:
       - elasticsearch
       - persist-server
+      - redis
+      - duplicate-checker-server
       - mockworker0
     restart: on-failure
 
